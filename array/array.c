@@ -41,7 +41,7 @@ void remove_element(Array *array, const void *element) {
     size_t i = 0;
     int found = 0;
     for (i = 0; i < array->size; i++) {
-        if (memcmp((char *)array->data + i * array->element_size, element, array->element_size)) {
+        if (memcmp((char *)array->data + i * array->element_size, element, array->element_size) == 0) {
             found = 1;
             break;
         }
