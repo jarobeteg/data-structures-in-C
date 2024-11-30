@@ -15,6 +15,7 @@ SRCS := main.c $(wildcard $(addsuffix /*.c, $(SRC_DIRS)))
 TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
 OBJS := $(patsubst %.c, $(BUILD_DIR)/%.o, $(SRCS))
 TEST_OBJS := $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_SRCS))
+SRC_OBJS := $(filter-out $(BUILD_DIR)/main.o, $(OBJS)) # Exclude main.c for tests
 
 # Executable names
 TARGET := main
@@ -29,10 +30,10 @@ $(TARGET): $(OBJS)
 	@echo "Linking $@"
 	$(CC) $(OBJS) $(LDFLAGS) -o $@
 
-# Link the test executable
-$(TEST_TARGET): $(OBJS) $(TEST_OBJS)
+# Link the test executable (exclude main.c)
+$(TEST_TARGET): $(SRC_OBJS) $(TEST_OBJS)
 	@echo "Linking $@ (test executable)"
-	$(CC) $(OBJS) $(TEST_OBJS) $(LDFLAGS) -o $@
+	$(CC) $(SRC_OBJS) $(TEST_OBJS) $(LDFLAGS) -o $@
 
 # Compile object files
 $(BUILD_DIR)/%.o: %.c
