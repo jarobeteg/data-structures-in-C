@@ -45,3 +45,31 @@ void linked_list_add_element(LinkedList *linked_list, const void *element, size_
 
     linked_list->size++;
 }
+
+void linked_list_remove_element(LinkedList *linked_list, const void *element) {
+
+}
+
+void *linked_list_get_element(LinkedList *linked_list, size_t index) {
+
+}
+
+void *linked_list_get_first(LinkedList *linked_list) {
+
+}
+
+void *linked_list_get_last(LinkedList *linked_list) {
+
+}
+
+void linked_list_free(LinkedList *linked_list) {
+    LinkedList *current = linked_list->next;
+    while (current) {
+        LinkedList *next_node = current->next;
+        free(current->data);
+        free(current);
+        current = next_node->next;
+    }
+    linked_list->size = 0;
+    linked_list->next = NULL;
+}
