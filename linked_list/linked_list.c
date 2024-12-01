@@ -57,8 +57,30 @@ void linked_list_add_element(LinkedList *linked_list, const void *element, size_
     linked_list->size++;
 }
 
-void linked_list_remove_element(LinkedList *linked_list, const void *element) {
+void linked_list_remove_element(LinkedList *linked_list, const void *element, size_t element_size) {
+    LinkedList *current = linked_list;
+    while (current != NULL) {
+        if (memcmp(current->data, element, element_size) == 0) {
+            
+            if (current->prev != NULL) {
+                current->prev->next = current->next;
+            }
 
+            if (current->next != NULL) {
+                current->next->prev = current->prev;
+            }
+
+            //todo edge case when the first element gets removed
+
+            free(current->data);
+            free(current);
+
+            linked_list->size--;
+            return;
+        }
+        current = current->next;
+    }
+    printf("%selement not found in linked list%s\n", RED, RESET);
 }
 
 void *linked_list_get_element(LinkedList *linked_list, size_t index) {

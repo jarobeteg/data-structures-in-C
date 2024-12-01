@@ -12,7 +12,7 @@ typedef struct LinkedList {
 
 void linked_list_init(LinkedList *linked_list);
 void linked_list_add_element(LinkedList *linked_list, const void *element, size_t element_size);
-void linked_list_remove_element(LinkedList *linked_list, const void *element);
+void linked_list_remove_element(LinkedList *linked_list, const void *element, size_t element_size);
 void *linked_list_get_element(LinkedList *linked_list, size_t index);
 void *linked_list_get_first(LinkedList *linked_list);
 void *linked_list_get_last(LinkedList *linked_list);
