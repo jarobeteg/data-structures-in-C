@@ -18,99 +18,99 @@ int validate_array_content(Array *array, const int *expected, size_t expected_si
 
 void test_int_array() {
     Array array;
-    init_array(&array, sizeof(int), 2);
+    array_init(&array, sizeof(int), 2);
 
     int value = 10;
-    add_element(&array, &value);
+    array_add_element(&array, &value);
     value = 20;
-    add_element(&array, &value);
+    array_add_element(&array, &value);
     value = 30;
-    add_element(&array, &value);
+    array_add_element(&array, &value);
 
     assert(array.size == 3);
-    assert(*(int *)get_element(&array, 0) == 10);
-    assert(*(int *)get_element(&array, 1) == 20);
-    assert(*(int *)get_element(&array, 2) == 30);
+    assert(*(int *)array_get_element(&array, 0) == 10);
+    assert(*(int *)array_get_element(&array, 1) == 20);
+    assert(*(int *)array_get_element(&array, 2) == 30);
 
-    free_array(&array);
+    array_free(&array);
 }
 
 void test_struct_array() {
     Array array;
-    init_array(&array, sizeof(Person), 2);
+    array_init(&array, sizeof(Person), 2);
 
     Person p1 = {"Alice", 30};
     Person p2 = {"Bob", 25};
 
-    add_element(&array, &p1);
-    add_element(&array, &p2);
+    array_add_element(&array, &p1);
+    array_add_element(&array, &p2);
 
     assert(array.size == 2);
 
-    Person *retrieved_person = (Person *)get_element(&array, 0);
+    Person *retrieved_person = (Person *)array_get_element(&array, 0);
     assert(strcmp(retrieved_person->name, "Alice") == 0);
     assert(retrieved_person->age == 30);
 
-    retrieved_person =  (Person *)get_element(&array, 1);
+    retrieved_person =  (Person *)array_get_element(&array, 1);
     assert(strcmp(retrieved_person->name, "Bob") == 0);
     assert(retrieved_person->age == 25);
 
-    free_array(&array);
+    array_free(&array);
 }
 
 void test_remove_element() {
     Array array;
-    init_array(&array, sizeof(int), 4);
+    array_init(&array, sizeof(int), 4);
 
     int elements[] = {10, 20, 30, 40, 50};
     for (int i = 0; i < 5; i++) {
-        add_element(&array, &elements[i]);
+        array_add_element(&array, &elements[i]);
     }
 
     int remove = 30;
-    remove_element(&array, &remove);
+    array_remove_element(&array, &remove);
     int expected1[] = {10, 20, 40, 50};
     assert(validate_array_content(&array, expected1, 4));
 
     remove = 10;
-    remove_element(&array, &remove);
+    array_remove_element(&array, &remove);
     int expected2[] = {20, 40, 50};
     assert(validate_array_content(&array, expected2, 3));
 
     remove = 50;
-    remove_element(&array, &remove);
+    array_remove_element(&array, &remove);
     int expected3[] = {20, 40};
     assert(validate_array_content(&array, expected3, 2));
 
     remove = 100;
-    remove_element(&array, &remove);
+    array_remove_element(&array, &remove);
     assert(validate_array_content(&array, expected3, 2));
 
     remove = 20;
-    remove_element(&array, &remove);
+    array_remove_element(&array, &remove);
     remove = 40;
-    remove_element(&array, &remove);
+    array_remove_element(&array, &remove);
     assert(array.size == 0);
 
-    free_array(&array);
+    array_free(&array);
 }
 
 void test_resize_array() {
     Array array;
-    init_array(&array, sizeof(int), 2);
+    array_init(&array, sizeof(int), 2);
 
     int value;
     for (int i = 0; i < 10; i++) {
         value = i;
-        add_element(&array, &value);
+        array_add_element(&array, &value);
     }
 
     assert(array.size == 10);
     for (int i = 0; i < 10; i++) {
-        assert(*(char *)get_element(&array, i) == i);
+        assert(*(char *)array_get_element(&array, i) == i);
     }
 
-    free_array(&array);
+    array_free(&array);
 }
 
 

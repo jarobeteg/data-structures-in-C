@@ -6,7 +6,7 @@
 #include "../types.h"
 #include "array.h"
 
-void init_array(Array *array, size_t element_size, size_t capacity) {
+void array_init(Array *array, size_t element_size, size_t capacity) {
     array->data = malloc(capacity * element_size);
     if (!array->data) {
         printf("%smalloc failed%s\n", RED, RESET);
@@ -17,7 +17,7 @@ void init_array(Array *array, size_t element_size, size_t capacity) {
     array->capacity = capacity;
 }
 
-void resize_array(Array *array) {
+void array_resize(Array *array) {
     size_t new_capacity = array->capacity * 2;
     void *new_data = realloc(array->data, new_capacity * array->element_size);
     if (!new_data) {
@@ -28,16 +28,16 @@ void resize_array(Array *array) {
     array->capacity = new_capacity;
 }
 
-void add_element(Array *array, const void *element) {
+void array_add_element(Array *array, const void *element) {
     if (array->size == array->capacity) {
-        resize_array(array);
+        array_resize(array);
     }
     void *target = (char *)array->data + (array->size * array->element_size);
     memcpy(target, element, array->element_size);
     array->size++;
 }
 
-void remove_element(Array *array, const void *element) {
+void array_remove_element(Array *array, const void *element) {
     size_t i = 0;
     int found = 0;
     for (i = 0; i < array->size; i++) {
@@ -61,7 +61,7 @@ void remove_element(Array *array, const void *element) {
     array->size--;
 }
 
-void *get_element(Array *array, size_t index) {
+void *array_get_element(Array *array, size_t index) {
     if (index >= array->size) {
         printf("%sout of bounds%s\n", RED, RESET);
         exit(EXIT_FAILURE);
@@ -69,7 +69,7 @@ void *get_element(Array *array, size_t index) {
     return (char *)array->data + (index * array->element_size);
 }
 
-void free_array(Array *array) {
+void array_free(Array *array) {
     free(array->data);
     array->data = NULL;
     array->element_size = 0;
