@@ -14,6 +14,17 @@ void linked_list_init(LinkedList *linked_list) {
 }
 
 void linked_list_add_element(LinkedList *linked_list, const void *element, size_t element_size) {
+    if (linked_list->data == NULL) {
+        linked_list->data = malloc(element_size);
+        if (!linked_list->data) {
+            printf("%smalloc failed%s\n", RED, RESET);
+            exit(EXIT_FAILURE);
+        }
+
+        memcpy(linked_list->data, element, element_size);
+        return;
+    }
+
     LinkedList *new_node = (LinkedList *)malloc(sizeof(LinkedList));
     if (!new_node) {
         printf("%smalloc failed%s\n", RED, RESET);
@@ -55,10 +66,12 @@ void *linked_list_get_element(LinkedList *linked_list, size_t index) {
 }
 
 void *linked_list_get_first(LinkedList *linked_list) {
+    LinkedList *current = linked_list;
 
 }
 
 void *linked_list_get_last(LinkedList *linked_list) {
+    LinkedList *current = linked_list;
 
 }
 
@@ -68,7 +81,12 @@ void linked_list_free(LinkedList *linked_list) {
         LinkedList *next_node = current->next;
         free(current->data);
         free(current);
-        current = next_node->next;
+        current = next_node;
+    }
+
+    if (linked_list->data) {
+        free(linked_list->data);
+        linked_list->data = NULL;
     }
     linked_list->size = 0;
     linked_list->next = NULL;
