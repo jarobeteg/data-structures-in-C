@@ -17,8 +17,6 @@ int validate_array_content(Array *array, const int *expected, size_t expected_si
 }
 
 void test_int_array() {
-    printf("%srunning test_int_array()...%s\n", CYAN, RESET);
-
     Array array;
     init_array(&array, sizeof(int), 2);
 
@@ -35,12 +33,9 @@ void test_int_array() {
     assert(*(int *)get_element(&array, 2) == 30);
 
     free_array(&array);
-    printf("%stest_int_array() passed%s\n", GREEN, RESET);
 }
 
 void test_struct_array() {
-    printf("%srunning test_struct_array()...%s\n", CYAN, RESET);
-
     Array array;
     init_array(&array, sizeof(Person), 2);
 
@@ -61,12 +56,9 @@ void test_struct_array() {
     assert(retrieved_person->age == 25);
 
     free_array(&array);
-    printf("%stest_struct_array() passed%s\n", GREEN, RESET);
 }
 
 void test_remove_element() {
-    printf("%srunning test_remove_element()...%s\n", CYAN, RESET);
-
     Array array;
     init_array(&array, sizeof(int), 4);
 
@@ -101,12 +93,9 @@ void test_remove_element() {
     assert(array.size == 0);
 
     free_array(&array);
-    printf("%stest_remove_element() passed%s\n", GREEN, RESET);
 }
 
 void test_resize_array() {
-    printf("%srunning test_resize_array()...%s\n", CYAN, RESET);
-
     Array array;
     init_array(&array, sizeof(int), 2);
 
@@ -122,16 +111,31 @@ void test_resize_array() {
     }
 
     free_array(&array);
-    printf("%stest_resize_array() passed%s\n", GREEN, RESET);
 }
 
 
 int main() {
     printf("%srunning tests...%s\n", MAGENTA, RESET);
+    printf("%srunning test_int_array()...%s\n", CYAN, RESET);
+
     test_int_array();
+    
+    printf("%stest_int_array() passed%s\n", GREEN, RESET);
+    printf("%srunning test_struct_array()...%s\n", CYAN, RESET);
+    
     test_struct_array();
+    
+    printf("%stest_struct_array() passed%s\n", GREEN, RESET);
+    printf("%srunning test_remove_element()...%s\n", CYAN, RESET);
+    
     test_remove_element();
+    
+    printf("%stest_remove_element() passed%s\n", GREEN, RESET);
+    printf("%srunning test_resize_array()...%s\n", CYAN, RESET);
+    
     test_resize_array();
+    
+    printf("%stest_resize_array() passed%s\n", GREEN, RESET);
     printf("%sall tests passed%s\n", MAGENTA, RESET);
     return 0;
 }
