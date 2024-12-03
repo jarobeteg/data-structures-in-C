@@ -9,6 +9,7 @@
 void linked_list_init(LinkedList *linked_list) {
     linked_list->data = NULL;
     linked_list->size = 0;
+    linked_list->element_size = 0;
     linked_list->prev = NULL;
     linked_list->next = NULL;
 }
@@ -22,6 +23,7 @@ void linked_list_add_element(LinkedList *linked_list, const void *element, size_
         }
 
         memcpy(linked_list->data, element, element_size);
+        linked_list->element_size = element_size;
         return;
     }
 
@@ -39,6 +41,7 @@ void linked_list_add_element(LinkedList *linked_list, const void *element, size_
 
     memcpy(new_node->data, element, element_size);
 
+    new_node->element_size = element_size;
     new_node->prev = NULL;
     new_node->next = NULL;
 
@@ -70,10 +73,19 @@ void linked_list_remove_element(LinkedList *linked_list, const void *element, si
                 current->next->prev = current->prev;
             }
 
-            //todo edge case when the first element gets removed
-
-            free(current->data);
-            free(current);
+            if (current == linked_list && current->next) {
+                memcpy(linked_list->data, current->next->data, current->next->element_size);
+                LinkedList *to_free = current->next;
+                linked_list->next = current->next->next;
+                if (linked_list->next) {
+                    linked_list->next->prev = linked_list;
+                }
+                free(to_free->data);
+                free(to_free);
+            } else {
+                free(current->data);
+                free(current);
+            }
 
             linked_list->size--;
             return;
@@ -126,5 +138,6 @@ void linked_list_free(LinkedList *linked_list) {
         linked_list->data = NULL;
     }
     linked_list->size = 0;
+    linked_list->element_size = 0;
     linked_list->next = NULL;
 }

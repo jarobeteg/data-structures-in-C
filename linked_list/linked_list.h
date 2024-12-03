@@ -6,6 +6,7 @@
 typedef struct LinkedList {
     void *data;
     size_t size;
+    size_t element_size;
     struct LinkedList *prev;
     struct LinkedList *next;
 } LinkedList;
