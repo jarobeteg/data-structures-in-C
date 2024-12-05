@@ -1,22 +1,22 @@
+#include <stdbool.h>
 #include <stddef.h>
-#include <stdio.h>
 #include <string.h>
-#include <assert.h>
+#include <stdio.h>
 
 #include "../array/array.h"
 #include "../types.h"
 
-int validate_array_content(Array *array, const int *expected, size_t expected_size) {
-    if (array->size != expected_size) return 0;
+bool validate_array_content(Array *array, const int *expected, size_t expected_size) {
+    if (array->size != expected_size) return false;
     for (size_t i = 0; i < expected_size; i++) {
-        if (memcmp((char *)array->data + i * array->element_size, &expected[i], array->element_size) != 0) {
-            return 0;
+        if (*(int *)array_get_element(array, i) != expected[i]) {
+            return false;
         }
     }
-    return 1;
+    return true;
 }
 
-void test_int_array() {
+bool test_int_array() {
     Array array;
     array_init(&array, sizeof(int), 2);
 
@@ -27,15 +27,16 @@ void test_int_array() {
     value = 30;
     array_add_element(&array, &value);
 
-    assert(array.size == 3);
-    assert(*(int *)array_get_element(&array, 0) == 10);
-    assert(*(int *)array_get_element(&array, 1) == 20);
-    assert(*(int *)array_get_element(&array, 2) == 30);
+    if (array.size != 3) return false;
+    if (*(int *)array_get_element(&array, 0) != 10) return false;
+    if (*(int *)array_get_element(&array, 1) != 20) return false;
+    if (*(int *)array_get_element(&array, 2) != 30) return false;
 
     array_free(&array);
+    return true;
 }
 
-void test_struct_array() {
+bool test_struct_array() {
     Array array;
     array_init(&array, sizeof(Person), 2);
 
@@ -45,20 +46,21 @@ void test_struct_array() {
     array_add_element(&array, &p1);
     array_add_element(&array, &p2);
 
-    assert(array.size == 2);
+    if (array.size != 2) return false;
 
     Person *retrieved_person = (Person *)array_get_element(&array, 0);
-    assert(strcmp(retrieved_person->name, "Alice") == 0);
-    assert(retrieved_person->age == 30);
+    if (strcmp(retrieved_person->name, "Alice") != 0) return false;
+    if (retrieved_person->age != 30) return false;
 
     retrieved_person =  (Person *)array_get_element(&array, 1);
-    assert(strcmp(retrieved_person->name, "Bob") == 0);
-    assert(retrieved_person->age == 25);
+    if (strcmp(retrieved_person->name, "Bob") != 0) return false;
+    if (retrieved_person->age != 25) return false;
 
     array_free(&array);
+    return true;
 }
 
-void test_remove_element() {
+bool test_remove_element() {
     Array array;
     array_init(&array, sizeof(int), 4);
 
@@ -70,32 +72,33 @@ void test_remove_element() {
     int remove = 30;
     array_remove_element(&array, &remove);
     int expected1[] = {10, 20, 40, 50};
-    assert(validate_array_content(&array, expected1, 4));
+    if (!validate_array_content(&array, expected1, 4)) return false;
 
     remove = 10;
     array_remove_element(&array, &remove);
     int expected2[] = {20, 40, 50};
-    assert(validate_array_content(&array, expected2, 3));
+    if (!validate_array_content(&array, expected2, 3)) return false;
 
     remove = 50;
     array_remove_element(&array, &remove);
     int expected3[] = {20, 40};
-    assert(validate_array_content(&array, expected3, 2));
+    if (!validate_array_content(&array, expected3, 2)) return false;
 
     remove = 100;
     array_remove_element(&array, &remove);
-    assert(validate_array_content(&array, expected3, 2));
+    if (!validate_array_content(&array, expected3, 2)) return false;
 
     remove = 20;
     array_remove_element(&array, &remove);
     remove = 40;
     array_remove_element(&array, &remove);
-    assert(array.size == 0);
+    if (array.size != 0) return false;
 
     array_free(&array);
+    return true;
 }
 
-void test_resize_array() {
+bool test_resize_array() {
     Array array;
     array_init(&array, sizeof(int), 2);
 
@@ -105,37 +108,13 @@ void test_resize_array() {
         array_add_element(&array, &value);
     }
 
-    assert(array.size == 10);
+    if (array.size != 10) return false;
     for (int i = 0; i < 10; i++) {
-        assert(*(char *)array_get_element(&array, i) == i);
+        if (*(int *)array_get_element(&array, i) != i) {
+            return false;
+        }
     }
 
     array_free(&array);
-}
-
-
-int main() {
-    printf("%srunning tests...%s\n", MAGENTA, RESET);
-    printf("%srunning test_int_array()...%s\n", CYAN, RESET);
-
-    test_int_array();
-    
-    printf("%stest_int_array() passed%s\n", GREEN, RESET);
-    printf("%srunning test_struct_array()...%s\n", CYAN, RESET);
-    
-    test_struct_array();
-    
-    printf("%stest_struct_array() passed%s\n", GREEN, RESET);
-    printf("%srunning test_remove_element()...%s\n", CYAN, RESET);
-    
-    test_remove_element();
-    
-    printf("%stest_remove_element() passed%s\n", GREEN, RESET);
-    printf("%srunning test_resize_array()...%s\n", CYAN, RESET);
-    
-    test_resize_array();
-    
-    printf("%stest_resize_array() passed%s\n", GREEN, RESET);
-    printf("%sall tests passed%s\n", MAGENTA, RESET);
-    return 0;
+    return true;
 }

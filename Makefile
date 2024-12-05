@@ -19,7 +19,7 @@ SRC_OBJS := $(filter-out $(BUILD_DIR)/main.o, $(OBJS)) # Exclude main.c for test
 
 # Executable names
 TARGET := main
-TEST_TARGET := test
+TEST_TARGET := main_test
 
 # Default target
 .PHONY: all
