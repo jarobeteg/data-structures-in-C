@@ -11,10 +11,10 @@ typedef struct Stack {
 } Stack;
 
 void stack_init(Stack *stack, size_t element_size, size_t capacity);
-void push(Stack *stack);
-void *pop(Stack *stack);
-void *peek(Stack *stack);
-bool is_empty(Stack *stack);
+void stack_push(Stack *stack, const void *element);
+void *stack_pop(Stack *stack);
+void *stack_peek(Stack *stack);
+bool is_stack_empty(Stack *stack);
 void stack_free(Stack *stack);
 
 #endif

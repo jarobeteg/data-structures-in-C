@@ -11,16 +11,23 @@ void stack_init(Stack *stack, size_t element_size, size_t capacity) {
     Array array;
     array_init(&array, element_size, capacity);
 
-    int value = 10;
-    array_add_element(&array, &value);
-    value = 20;
-    array_add_element(&array, &value);
-
     stack->top = -1;
     stack->array = array;
 }
 
+void stack_push(Stack *stack, const void *element) {
+    array_add_element(&stack->array, element);
+    stack->top++;
+}
+
+void *stack_pop(Stack *stack) {
+    const void *element = array_get_element(&stack->array, stack->top);
+    array_remove_element(&stack->array, element);
+    stack->top--;
+    return (char *)element;    
+}
+
 void stack_free(Stack *stack) {
-    array_free(&stack->array);\
+    array_free(&stack->array);
     stack->top = -1;
 }
