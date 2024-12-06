@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +26,15 @@ void *stack_pop(Stack *stack) {
     array_remove_element(&stack->array, element);
     stack->top--;
     return (char *)element;    
+}
+
+void *stack_peek(Stack *stack) {
+    const void *element = array_get_element(&stack->array, stack->top);
+    return (char *)element;
+}
+
+bool is_stack_empty(Stack *stack) {
+    return stack->top == -1;
 }
 
 void stack_free(Stack *stack) {
