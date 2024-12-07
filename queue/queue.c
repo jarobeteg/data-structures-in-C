@@ -26,6 +26,20 @@ void queue_dequeue(Queue *queue) {
     queue->size--;
 }
 
+void *queue_front(Queue *queue) {
+    const void *element = array_get_element(&queue->array, 0);
+    return (char *)element;
+}
+
+void *queue_rear(Queue *queue) {
+    const void *element = array_get_element(&queue->array, queue->size);
+    return (char *)element;
+}
+
+bool is_queue_empty(Queue *queue) {
+    return queue->size == -1;
+}
+
 void queue_free(Queue *queue) {
     array_free(&queue->array);
     queue->size = -1;

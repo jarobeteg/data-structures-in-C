@@ -6,7 +6,7 @@
 #include "../array/array.h"
 
 typedef struct Queue {
-    size_t size;
+    int size;
     Array array;
 } Queue;
 
