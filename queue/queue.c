@@ -16,7 +16,7 @@ void queue_init(Queue *queue, size_t element_size, size_t capacity) {
 }
 
 void queue_enqueue(Queue *queue, const void *element) {
-    array_add_element(&queue->array, element);
+    array_add_element_at_end(&queue->array, element);
     queue->size++;
 }
 

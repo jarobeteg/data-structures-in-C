@@ -28,7 +28,7 @@ void array_resize(Array *array) {
     array->capacity = new_capacity;
 }
 
-void array_add_element(Array *array, const void *element) {
+void array_add_element_at_end(Array *array, const void *element) {
     if (array->size == array->capacity) {
         array_resize(array);
     }

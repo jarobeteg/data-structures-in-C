@@ -16,7 +16,7 @@ void stack_init(Stack *stack, size_t element_size, size_t capacity) {
 }
 
 void stack_push(Stack *stack, const void *element) {
-    array_add_element(&stack->array, element);
+    array_add_element_at_end(&stack->array, element);
     stack->top++;
 }
 
