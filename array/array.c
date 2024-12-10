@@ -7,6 +7,11 @@
 #include "array.h"
 
 void array_init(Array *array, size_t element_size, size_t capacity) {
+    if (capacity <= 0) {
+        printf("%sinit capacity has to be >= 0%s\n", RED, RESET);
+        exit(EXIT_FAILURE);
+    }
+
     array->data = malloc(capacity * element_size);
     if (!array->data) {
         printf("%smalloc failed%s\n", RED, RESET);
@@ -34,6 +39,21 @@ void array_add_element_at_end(Array *array, const void *element) {
     }
     void *target = (char *)array->data + (array->size * array->element_size);
     memcpy(target, element, array->element_size);
+    array->size++;
+}
+
+void array_add_element_at_beginning(Array *array, const void *element) {
+    if (array->size == array->capacity) {
+        array_resize(array);
+    }
+
+    for (size_t i = array->size; i > 0; i--) {
+        void *current = (char *)array->data + i * array->element_size;
+        void *previous = (char *)array->data + (i - 1) * array->element_size;
+        memcpy(current, previous, array->element_size);
+    }
+
+    memcpy(array->data, element, array->element_size);
     array->size++;
 }
 
