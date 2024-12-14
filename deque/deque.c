@@ -15,6 +15,28 @@ void deque_init(Deque *deque, size_t element_size, size_t capacity) {
     deque->array = array;
 }
 
+void deque_push_front(Deque *deque, const void *element) {
+    array_add_element_at_beginning(&deque->array, element);
+    deque->size++;
+}
+
+void deque_push_rear(Deque *deque, const void *element) {
+    array_add_element_at_end(&deque->array, element);
+    deque->size++;
+}
+
+void deque_pop_front(Deque *deque) {
+    const void *element = array_get_element(&deque->array, 0);
+    array_remove_element(&deque->array, element);
+    deque->size--;
+}
+
+void deque_pop_rear(Deque *deque) {
+    const void *element = array_get_element(&deque->array, deque->size);
+    array_remove_element(&deque->array, element);
+    deque->size--;
+}
+
 void deque_free(Deque *deque) {
     array_free(&deque->array);
     deque->size = -1;
